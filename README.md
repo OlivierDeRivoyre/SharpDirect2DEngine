@@ -9,14 +9,14 @@ The method 'Run()' start a windows that contains a surface on witch you can draw
 
 The idea is hide the DX complexity by having the following usages of this engine:
 
-using (DXCanvas canvas = new DXCanvas())
-{
-	canvas.Click += canvas_Click;
-	canvas.Update += canvas_Update;
-	canvas.Draw += canvas_Draw;
-
-	canvas.Run();
-}
+	using (DXCanvas canvas = new DXCanvas())
+	{
+		canvas.Click += canvas_Click;
+		canvas.Update += canvas_Update;
+		canvas.Draw += canvas_Draw;
+		
+		canvas.Run();
+	}
 
 Currently, it handle:
  - the loop game.
