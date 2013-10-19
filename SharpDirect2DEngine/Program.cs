@@ -21,14 +21,21 @@ namespace SharpDirect2DEngine
 		/// </summary>
 		[STAThread]
 		public static void Main()
-		{						
-			using (DXCanvas canvas = new DXCanvas())
+		{
+			try
 			{
-				canvas.Click += canvas_Click;
-				canvas.Update += canvas_Update;
-				canvas.Draw += canvas_Draw;
+				using (DXCanvas canvas = new DXCanvas())
+				{
+					canvas.Click += canvas_Click;
+					canvas.Update += canvas_Update;
+					canvas.Draw += canvas_Draw;
 
-				canvas.Run();
+					canvas.Run();
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
 			}
 		}
 
