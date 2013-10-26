@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using SharpDirect2DEngine;
 
 namespace Bombermin
 {
@@ -8,16 +9,24 @@ namespace Bombermin
 	/// A Bomberman game.
 	/// </summary>
 	static class Program
-	{		
+	{
 		[STAThread]
 		static void Main()
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-		//	Application.Run(new Form1());
-
-			///TODO
-
+			try
+			{
+				using (DXCanvas canvas = new DXCanvas())
+				{
+					Game game = new Game(canvas);
+					game.Run();
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
 		}
 	}
 }

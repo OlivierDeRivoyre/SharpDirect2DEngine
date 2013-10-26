@@ -30,12 +30,12 @@ namespace SharpDirect2DEngine
 		/// <summary>
 		/// Time to update the game physic
 		/// </summary>
-		public EventHandler Update;		
+		public event EventHandler Update;		
 		/// <summary>
 		/// Time to draw
 		/// </summary>
-		public EventHandler<DrawEventArgs> Draw;
-		public EventHandler<MouseEventArgs> Click;
+		public event EventHandler<DrawEventArgs> Draw;
+		public event EventHandler<MouseEventArgs> Click;
 		public int Width;
 		public int Height;
 		
@@ -83,7 +83,7 @@ namespace SharpDirect2DEngine
 			this.directInput = new DirectInput();///http://gamedev.stackexchange.com/questions/61729/sharpdx-how-to-detect-if-mouse-button-is-pressed
 			this.mouse = new Mouse(this.directInput);
 			this.mouse.Acquire();
-			this.lastMouseState = mouse.GetCurrentState();		
+			this.lastMouseState = mouse.GetCurrentState();			
 		}
 
 		public void Dispose()
@@ -147,6 +147,7 @@ namespace SharpDirect2DEngine
 			this.renderTarget.BeginDraw();
 			this.renderTarget.Transform = SharpDX.Matrix3x2.Identity;
 			this.renderTarget.Clear(SharpDX.Color.Black);
+			//this.renderTarget.Clear(SharpDX.Color.Transparent);
 
 			if (this.Draw != null)
 			{
@@ -241,7 +242,7 @@ namespace SharpDirect2DEngine
 		}
 
 		private void resize(int width, int height)
-		{
+		{		
 			Trace.WriteLine("Resize to " + width + "x" + height);
 			if (this.backBuffer != null)
 			{
@@ -275,7 +276,7 @@ namespace SharpDirect2DEngine
 					Type = RenderTargetType.Default,
 					Usage = RenderTargetUsage.None
 				});
-			}
+			}			
 		}
 
 		#endregion Resize
