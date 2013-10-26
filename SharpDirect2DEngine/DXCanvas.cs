@@ -9,6 +9,7 @@ using System.Diagnostics;
 using SharpDX.Direct2D1;
 using System.Windows.Forms;
 using SharpDX.DirectInput;
+using SharpDX;
 
 namespace SharpDirect2DEngine
 {
@@ -49,6 +50,11 @@ namespace SharpDirect2DEngine
 		private SharpDX.DirectInput.MouseState lastMouseState;
 		private long lastTick;
 
+		/// <summary>
+		/// Will need to be notified when resizing screen.
+		/// </summary>
+		private List<DXImage> existingImages = new List<DXImage>();
+
 		public DXCanvas()
 		{
 			///Init as in the Katys Coe tutorial
@@ -82,6 +88,13 @@ namespace SharpDirect2DEngine
 
 		public void Dispose()
 		{
+			foreach (DXImage image in this.existingImages)
+			{
+				if (image.bitmap != null)
+				{
+					image.bitmap.Dispose();
+				}
+			}
 			this.mouse.Dispose();
 			this.directInput.Dispose();
 			this.swapChain.Dispose();
@@ -242,6 +255,8 @@ namespace SharpDirect2DEngine
 			this.Width = width;
 			this.Height = height;
 			this.initRenderTarget();
+			///RenderTarget => need to refresh images
+			this.reloadImages();
 		}
 
 		private void initRenderTarget()
@@ -264,6 +279,33 @@ namespace SharpDirect2DEngine
 		}
 
 		#endregion Resize
+
+		#region Image
+
+
+
+		public DXImage LoadImageFromFile(string filename)
+		{			
+			DXImage image = new DXImage(this, filename);
+			this.existingImages.Add(image);
+			return image;
+		}
+
+		private void reloadImages()
+		{
+			foreach (DXImage image in this.existingImages)
+			{
+				image.rebuildDirectXBitmap();
+			}
+		}
+
+		internal void unregisterDXImage(DXImage image)
+		{
+			this.existingImages.Remove(image);
+		}
+
+		#endregion Image
+
 	}
 
 
